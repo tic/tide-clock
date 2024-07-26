@@ -1,6 +1,7 @@
 import math
 from datetime import datetime
 from PIL import Image, ImageDraw
+# from inky import InkyPHAT
 from tide_clock.tides import Tide, interpolate_tide_height
 
 def get_simple_tide_string(tide: Tide):
@@ -52,5 +53,9 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
 
   return img
 
-def display(image):
+def display(img):
   pass
+  # inky_display = InkyPHAT("red")
+  # inky_display.set_border(inky_display.WHITE)
+  # inky_display.set_image(img)
+  # inky_display.show()
