@@ -14,7 +14,6 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   current_height = interpolate_tide_height(last_tide, next_tide, datetime.now())
   portion_of_max = math.fabs(current_height / (last_tide.height - next_tide.height))
 
-  height_str = "{:.3f}'".format(current_height)
   pct_str = '{:.2%}'.format(portion_of_max)
 
   img = Image.new("P", (212, 104), 'white')
@@ -24,7 +23,6 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   draw.line([(19, 0), (19, 104)], 'black', 2)
   draw.rectangle([(0, 104 - round(104 * portion_of_max)), (18, 104)], 'red')
   draw.line([(0, 0), (0, 104)], 'black', 2)
-  print(pct_str)
   # Vertical text is hard :(
   # htext = Image.new("L", (104, 104), 'white')
   # ImageDraw.Draw(htext).text((0,0), pct_str, 'black', font_size=18)
