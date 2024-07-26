@@ -50,5 +50,7 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   draw.line([(22, 21), (250, 21)], 'black', 4)
   draw.line([(22, 102), (250, 102)], 'black', 4)
 
+  return img
+
 def display(image):
   pass
