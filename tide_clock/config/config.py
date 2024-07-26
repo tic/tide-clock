@@ -19,7 +19,6 @@ def get_config():
   try:
     return {
       'station_id': env('TIDE_CLOCK_STATION_ID'),
-      'test': env('test')
     }
   finally:
     if len(missing_keys) > 0:
