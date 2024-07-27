@@ -16,38 +16,40 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
 
   pct_str = '{:.2%}'.format(portion_of_max)
 
-  img = Image.new("P", (212, 104), 'white')
+  img = Image.new("P", (250, 122), 'white')
   draw = ImageDraw.Draw(img)
 
   # Relative height bar
-  draw.line([(19, 0), (19, 104)], 'black', 2)
-  draw.rectangle([(0, 104 - round(104 * portion_of_max)), (18, 104)], 'red')
-  draw.line([(0, 0), (0, 104)], 'black', 2)
+  draw.line([(20, 0), (20, 122)], 'black', 4)
+  draw.rectangle([(0, 122 - round(122 * portion_of_max)), (18, 122)], 'red')
+  draw.line([(1, 0), (1, 122)], 'black', 4)
+  print(pct_str)
+
   # Vertical text is hard :(
-  # htext = Image.new("L", (104, 104), 'white')
+  # htext = Image.new("L", (122, 122), 'white')
   # ImageDraw.Draw(htext).text((0,0), pct_str, 'black', font_size=18)
-  # vtext = htext.rotate(90).crop((0, 0, 20, 104))
+  # vtext = htext.rotate(90).crop((0, 0, 20, 122))
   # vtext.show()
   # img.paste(vtext)
 
   # Last updated timestamp
-  draw.text((75, 89), 'As of', 'black')
-  draw.text((104, 89), datetime.now().strftime('%Y-%m-%dT%X'), 'red')
+  draw.text((90, 109), 'Updated', 'black')
+  draw.text((140, 109), datetime.now().strftime('%Y-%m-%dT%X'), 'red')
 
   # Min and max heights
   [min_h, max_h] = sorted([last_tide.height, next_tide.height])
   is_tide_rising = min_h == last_tide.height
-  draw.text((24, 86), "{:.3f}'".format(min_h), 'black' if is_tide_rising else 'red', font_size=14)
-  draw.text((24, 0), "{:.3f}'".format(max_h), 'red' if is_tide_rising else 'black', font_size=14)
+  draw.text((25, 105), "{:.3f}'".format(min_h), 'red' if is_tide_rising else 'black', font_size=14)
+  draw.text((25, 0), "{:.3f}'".format(max_h), 'black' if is_tide_rising else 'red', font_size=14)
 
   # Tides
-  draw.text((55, 22), get_simple_tide_string(last_tide), 'black', font_size=15)
-  draw.text((55, 42), get_simple_tide_string(next_tide), 'black', font_size=15)
-  draw.text((55, 62), get_simple_tide_string(later_tide), 'black', font_size=15)
+  draw.text((55, 25), get_simple_tide_string(last_tide), 'black', font_size=20)
+  draw.text((55, 50), get_simple_tide_string(next_tide), 'black', font_size=20)
+  draw.text((55, 75), get_simple_tide_string(later_tide), 'black', font_size=20)
 
   # Dividers
-  draw.line([(21, 18), (212, 18)], 'black', 2)
-  draw.line([(21, 84), (212, 84)], 'black', 2)
+  draw.line([(22, 21), (250, 21)], 'black', 4)
+  draw.line([(22, 102), (250, 102)], 'black', 4)
 
   return img
 
