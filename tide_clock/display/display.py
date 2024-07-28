@@ -1,6 +1,5 @@
 from datetime import datetime
 from PIL import Image, ImageDraw
-# from inky.auto import auto
 from tide_clock.tides import Tide, interpolate_tide_height
 
 def get_simple_tide_string(tide: Tide):
@@ -33,13 +32,16 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   # img.paste(vtext)
 
   # Last updated timestamp
-  draw.text((90, 109), 'Updated', 'black')
-  draw.text((140, 109), datetime.now().strftime('%Y-%m-%dT%X'), 'red')
+  draw.text((90, 108), 'Updated', 'black')
+  draw.text((140, 108), datetime.now().strftime('%Y-%m-%dT%X'), 'red')
 
   # Min and max heights
   is_tide_rising = min_h == last_tide.height
   draw.text((25, 105), "{:.3f}'".format(min_h), 'red' if is_tide_rising else 'black', font_size=14)
   draw.text((25, 0), "{:.3f}'".format(max_h), 'black' if is_tide_rising else 'red', font_size=14)
+
+  # Current height
+  draw.text((100, 1), "{:.3f}' and {}".format(current_height, 'rising' if is_tide_rising else 'falling'), 'black', font_size=14)
 
   # Tides
   draw.text((55, 25), get_simple_tide_string(last_tide), 'black', font_size=20)
@@ -53,8 +55,12 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   return img
 
 def display(img):
-  img.show()
-  # inky_display = auto()
-  # inky_display.set_border(inky_display.WHITE)
-  # inky_display.set_image(img)
-  # inky_display.show()
+  try:
+    from inky.auto import auto
+    inky_display = auto()
+    inky_display.set_border(inky_display.WHITE)
+    inky_display.set_image(img)
+    inky_display.show()
+  except ImportError:
+    print('inky is not installed. showing image instead')
+    img.show()
