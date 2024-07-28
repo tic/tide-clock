@@ -1,4 +1,3 @@
-import math
 from datetime import datetime
 from PIL import Image, ImageDraw
 # from inky.auto import auto
@@ -12,10 +11,11 @@ def get_simple_tide_string(tide: Tide):
 
 def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   current_height = interpolate_tide_height(last_tide, next_tide, datetime.now())
-  portion_of_max = math.fabs(current_height / (last_tide.height - next_tide.height))
-
+  [min_h, max_h] = sorted([last_tide.height, next_tide.height])
+  portion_of_max = (current_height - min_h) / (max_h - min_h)
   pct_str = '{:.2%}'.format(portion_of_max)
 
+  # Create base image
   img = Image.new("P", (250, 122), 'white')
   draw = ImageDraw.Draw(img)
 
@@ -37,7 +37,6 @@ def generate_display_image(last_tide: Tide, next_tide: Tide, later_tide: Tide):
   draw.text((140, 109), datetime.now().strftime('%Y-%m-%dT%X'), 'red')
 
   # Min and max heights
-  [min_h, max_h] = sorted([last_tide.height, next_tide.height])
   is_tide_rising = min_h == last_tide.height
   draw.text((25, 105), "{:.3f}'".format(min_h), 'red' if is_tide_rising else 'black', font_size=14)
   draw.text((25, 0), "{:.3f}'".format(max_h), 'black' if is_tide_rising else 'red', font_size=14)
